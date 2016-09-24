@@ -30,3 +30,4 @@
 (depends-on "alchemist")
 (depends-on "molokai-theme")
 (depends-on "evil-terminal-cursor-changer")
+(depends-on "elm-mode")

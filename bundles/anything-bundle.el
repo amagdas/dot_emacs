@@ -470,6 +470,8 @@ Repeated invocations toggle between the two most recently open buffers."
 (setq evil-insert-state-cursor '("green" bar))
 (setq evil-emacs-state-cursor '("green" box))
 
+;; (require 'elm-mode)
+;; (elm-format-on-save t)
 (setq custom-file (expand-file-name "customize.el" user-emacs-directory))
 (load custom-file)
 
