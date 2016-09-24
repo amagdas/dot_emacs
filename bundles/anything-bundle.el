@@ -146,6 +146,7 @@
   "w"  'kill-buffer
   "nn" 'neotree-toggle
   "nf" 'neotree-find
+  "new" 'neotree-create-node'
   "ni" 'neotree-hidden-file-toggle
   "gk" 'windmove-up
   "gj" 'windmove-down
@@ -463,6 +464,7 @@ Repeated invocations toggle between the two most recently open buffers."
     ))
 
 (require 'evil-terminal-cursor-changer)
+(evil-terminal-cursor-changer-activate)
 (setq evil-visual-state-cursor '("red" box))
 (setq evil-normal-state-cursor '("red" box))
 (setq evil-insert-state-cursor '("green" bar))
@@ -472,5 +474,4 @@ Repeated invocations toggle between the two most recently open buffers."
 (load custom-file)
 
 (provide 'anything-bundle)
-
 ;;; anything-bundle.el ends here
