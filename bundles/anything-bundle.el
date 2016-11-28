@@ -319,11 +319,12 @@ Repeated invocations toggle between the two most recently open buffers."
 ;; =============================================================================
 
 ;; (load-theme 'atom-dark)
-;; (load-theme 'tsdh-dark)
 ;; (load-theme 'tango-dark)
 ;; (load-theme 'junio)
+;; (load-theme 'solarized)
 
-(load-theme 'molokai)
+;; (load-theme 'molokai)
+(load-theme 'tsdh-dark)
 
 (require 'pbcopy)
 (turn-on-pbcopy)
@@ -354,6 +355,18 @@ Repeated invocations toggle between the two most recently open buffers."
 ;; JSX
 (require 'web-mode)
 (add-to-list 'auto-mode-alist '("\\.js?\\'" . web-mode))
+
+(defun my/use-eslint-from-node-modules ()
+  (let* ((root (locate-dominating-file
+                (or (buffer-file-name) default-directory)
+                "node_modules"))
+         (eslint (and root
+                      (expand-file-name "node_modules/eslint/bin/eslint.js"
+                                        root))))
+    (when (and eslint (file-executable-p eslint))
+      (setq-local flycheck-javascript-eslint-executable eslint))))
+
+(add-hook 'flycheck-mode-hook #'my/use-eslint-from-node-modules)
 
 ;; disable jshint since we prefer eslint checking
 (setq-default flycheck-disabled-checkers
@@ -470,8 +483,11 @@ Repeated invocations toggle between the two most recently open buffers."
 (setq evil-insert-state-cursor '("green" bar))
 (setq evil-emacs-state-cursor '("green" box))
 
-;; (require 'elm-mode)
-;; (elm-format-on-save t)
+(require 'elm-mode)
+(setq elm-format-on-save t)
+(add-hook 'elm-mode-hook 'linum-mode)
+(add-hook 'elm-mode-hook 'flycheck-mode)
+
 (setq custom-file (expand-file-name "customize.el" user-emacs-directory))
 (load custom-file)
 
