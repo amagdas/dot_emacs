@@ -283,7 +283,7 @@ Repeated invocations toggle between the two most recently open buffers."
 
 ;; Powerline
 (require 'powerline)
-(powerline-vim-theme)
+(powerline-center-evil-theme)
 
 ;; Highlight cursor line
 (global-hl-line-mode t)
@@ -319,12 +319,13 @@ Repeated invocations toggle between the two most recently open buffers."
 ;; =============================================================================
 
 ;; (load-theme 'atom-dark)
-;; (load-theme 'tango-dark)
+(load-theme 'tango-dark)
 ;; (load-theme 'junio)
-;; (load-theme 'solarized)
+;;(load-theme 'solarized)
 
 ;; (load-theme 'molokai)
-(load-theme 'tsdh-dark)
+;; (load-theme 'tsdh-dark)
+;; (load-theme 'railscast)
 
 (require 'pbcopy)
 (turn-on-pbcopy)
