@@ -284,10 +284,15 @@ Repeated invocations toggle between the two most recently open buffers."
 ;; Powerline
 (require 'powerline)
 (powerline-center-evil-theme)
+(set-face-attribute 'mode-line nil
+                    :foreground "Yellow"
+                    :background "Black"
+                    :box nil)
 
 ;; Highlight cursor line
-(global-hl-line-mode t)
-(set-face-background hl-line-face "gray10")
+;; (global-hl-line-mode t)
+;; (set-face-background hl-line-face "gray10")
+;; (set-face-background hl-line-face "gray10")
 
 ;; Make lines longer than 80 highlighted
 (setq whitespace-line-column 120) ;; limit line length
@@ -313,6 +318,7 @@ Repeated invocations toggle between the two most recently open buffers."
 (define-key global-map (kbd "RET") 'newline-and-indent)
 
 (setq inhibit-startup-screen t)
+(setq ns-use-srgb-colorspace nil)
 
 ;; =============================================================================
 ;; Custom Packages
@@ -321,7 +327,7 @@ Repeated invocations toggle between the two most recently open buffers."
 ;; (load-theme 'atom-dark)
 (load-theme 'tango-dark)
 ;; (load-theme 'junio)
-;;(load-theme 'solarized)
+;; (load-theme 'solarized)
 
 ;; (load-theme 'molokai)
 ;; (load-theme 'tsdh-dark)
