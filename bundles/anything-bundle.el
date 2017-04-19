@@ -5,8 +5,17 @@
 
 ;;; Code:
 
+(require 'package)
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+
+(eval-when-compile
+  (require 'use-package))
+
 (setq make-backup-files nil)
 (menu-bar-mode -1)
+(scroll-bar-mode -1)
 
 ;; (setq x-select-enable-clipboard t)
 ;; (setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
@@ -114,20 +123,6 @@
 ;; Don't wait for any other keys after escape is pressed.
 (setq evil-esc-delay 0)
 
-;; Don't show default text in command bar
-;  ** Currently breaks visual range selection, looking for workaround
-;(add-hook 'minibuffer-setup-hook (lambda () (evil-ex-remove-default)))
-
-;; Make HJKL keys work in special buffers
-(evil-add-hjkl-bindings magit-branch-manager-mode-map 'emacs
-  "K" 'magit-discard-item
-  "L" 'magit-key-mode-popup-logging)
-(evil-add-hjkl-bindings magit-status-mode-map 'emacs
-  "K" 'magit-discard-item
-  "l" 'magit-key-mode-popup-logging
-  "h" 'magit-toggle-diff-refine-hunk)
-(evil-add-hjkl-bindings magit-log-mode-map 'emacs)
-(evil-add-hjkl-bindings magit-commit-mode-map 'emacs)
 (evil-add-hjkl-bindings occur-mode 'emacs)
 (setq evil-want-C-u-scroll t)
 
@@ -140,9 +135,6 @@
   "cc" 'evilnc-comment-or-uncomment-lines
   "ag" 'projectile-ag
   "," 'switch-to-previous-buffer
-  "gb" 'mo-git-blame-current
-  "gL" 'magit-log
-  "gs" 'magit-status
   "w"  'kill-buffer
   "nn" 'neotree-toggle
   "nf" 'neotree-find
@@ -184,15 +176,6 @@ Repeated invocations toggle between the two most recently open buffers."
 ;; (define-key evil-normal-state-map (kbd "RET") 'save-buffer)
 (define-key evil-normal-state-map (kbd "C-j") 'evil-scroll-down)
 (define-key evil-normal-state-map (kbd "C-k") 'evil-scroll-up)
-
-
-;; Make ";" behave like ":" in normal mode
-(define-key evil-normal-state-map (kbd ";") 'evil-ex)
-(define-key evil-visual-state-map (kbd ";") 'evil-ex)
-(define-key evil-motion-state-map (kbd ";") 'evil-ex)
-
-;; Yank whole buffer
-(define-key evil-normal-state-map (kbd "gy") (kbd "gg v G y"))
 
 (setq key-chord-two-keys-delay 0.075)
 (key-chord-mode 1)
@@ -266,12 +249,12 @@ Repeated invocations toggle between the two most recently open buffers."
 (global-linum-mode t)
 (setq-default truncate-lines t)
 
-(defun linum-format-func (line)
-  (let ((w (length (number-to-string (count-lines (point-min) (point-max))))))
-     (propertize (format (format "%%%dd " w) line) 'face 'linum)))
+;; (defun linum-format-func (line)
+;;   (let ((w (length (number-to-string (count-lines (point-min) (point-max))))))
+;;      (propertize (format (format "%%%dd " w) line) 'face 'linum)))
 
-(setq linum-format 'linum-format-func)
-;; use customized linum-format: add a addition space after the line number
+;; (setq linum-format 'linum-format-func)
+;; ;; use customized linum-format: add a addition space after the line number
 
 ;; Remember the cursor position of files when reopening them
 (setq save-place-file "~/.emacs.d/saveplace")
@@ -282,20 +265,14 @@ Repeated invocations toggle between the two most recently open buffers."
 (column-number-mode t)
 
 ;; Powerline
-(require 'powerline)
-(powerline-center-evil-theme)
-(set-face-attribute 'mode-line nil
-                    :foreground "Yellow"
-                    :background "Black"
-                    :box nil)
+(require 'smart-mode-line)
+(setq powerline-default-separator-dir '(right . left))
+(setq sml/theme 'powerline)
+(sml/setup)
 
-;; Highlight cursor line
-;; (global-hl-line-mode t)
-;; (set-face-background hl-line-face "gray10")
-;; (set-face-background hl-line-face "gray10")
 
-;; Make lines longer than 80 highlighted
-(setq whitespace-line-column 120) ;; limit line length
+;; Make lines longer than 320 highlighted
+(setq whitespace-line-column 320) ;; limit line length
 (setq whitespace-style '(face lines-tail))
 (global-whitespace-mode t)
 
@@ -324,20 +301,38 @@ Repeated invocations toggle between the two most recently open buffers."
 ;; Custom Packages
 ;; =============================================================================
 
+(if (not window-system)
+      (defvar atom-one-dark-colors-alist
+        '(("atom-one-dark-accent"   . "#528BFF")
+          ("atom-one-dark-fg"       . "#ABB2BF")
+          ("atom-one-dark-bg"       . "gray14")
+          ("atom-one-dark-bg-1"     . "gray13")
+          ("atom-one-dark-bg-hl"    . "gray13")
+          ("atom-one-dark-gutter"   . "#666D7A")
+          ("atom-one-dark-accent"   . "#AEB9F5")
+          ("atom-one-dark-mono-1"   . "#ABB2BF")
+          ("atom-one-dark-mono-2"   . "#828997")
+          ("atom-one-dark-mono-3"   . "#5C6370")
+          ("atom-one-dark-cyan"     . "#56B6C2")
+          ("atom-one-dark-blue"     . "#61AFEF")
+          ("atom-one-dark-purple"   . "#C678DD")
+          ("atom-one-dark-green"    . "#98C379")
+          ("atom-one-dark-red-1"    . "#E06C75")
+          ("atom-one-dark-red-2"    . "#BE5046")
+          ("atom-one-dark-orange-1" . "#D19A66")
+          ("atom-one-dark-orange-2" . "#E5C07B")
+          ("atom-one-dark-gray"     . "#3E4451")
+          ("atom-one-dark-silver"   . "#AAAAAA")
+          ("atom-one-dark-black"    . "#0F1011"))
+        "List of Atom One Dark colors.")
+    )
+
 ;; (load-theme 'atom-dark)
-(load-theme 'tango-dark)
-;; (load-theme 'junio)
-;; (load-theme 'solarized)
-
+;; (load-theme 'tango-dark)
+(load-theme 'atom-one-dark)
 ;; (load-theme 'molokai)
-;; (load-theme 'tsdh-dark)
-;; (load-theme 'railscast)
+;; (load-theme 'monokai)
 
-(require 'pbcopy)
-(turn-on-pbcopy)
-
-(add-to-list 'load-path "~/.emacs.d/vendor/longlines/")
-(require 'longlines)
 
 (require 'elixir-mode)
 (add-to-list 'load-path "~/.emacs.d/vendor/alchemist.el")
@@ -483,8 +478,10 @@ Repeated invocations toggle between the two most recently open buffers."
     (setq interprogram-paste-function 'xclip-paste-function)
     ))
 
+;; Cursom terminal integration
 (require 'evil-terminal-cursor-changer)
 (evil-terminal-cursor-changer-activate)
+
 (setq evil-visual-state-cursor '("red" box))
 (setq evil-normal-state-cursor '("red" box))
 (setq evil-insert-state-cursor '("green" bar))
