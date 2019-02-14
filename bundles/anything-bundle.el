@@ -17,6 +17,8 @@
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
 
+(set-face-attribute 'default t :font "Fira Code Retina-18")
+
 ;; (setq x-select-enable-clipboard t)
 ;; (setq interprogram-paste-function 'x-cut-buffer-or-selection-value)
 
@@ -131,7 +133,7 @@
 (evil-leader/set-key
   "." 'find-tag
   "t" 'projectile-find-file
-  "b" 'ido-switch-buffer
+  "<SPC>" 'ido-switch-buffer
   "cc" 'evilnc-comment-or-uncomment-lines
   "ag" 'projectile-ag
   "," 'switch-to-previous-buffer
@@ -300,33 +302,6 @@ Repeated invocations toggle between the two most recently open buffers."
 ;; =============================================================================
 ;; Custom Packages
 ;; =============================================================================
-
-(if (not window-system)
-      (defvar atom-one-dark-colors-alist
-        '(("atom-one-dark-accent"   . "#528BFF")
-          ("atom-one-dark-fg"       . "#ABB2BF")
-          ("atom-one-dark-bg"       . "gray14")
-          ("atom-one-dark-bg-1"     . "gray13")
-          ("atom-one-dark-bg-hl"    . "gray13")
-          ("atom-one-dark-gutter"   . "#666D7A")
-          ("atom-one-dark-accent"   . "#AEB9F5")
-          ("atom-one-dark-mono-1"   . "#ABB2BF")
-          ("atom-one-dark-mono-2"   . "#828997")
-          ("atom-one-dark-mono-3"   . "#5C6370")
-          ("atom-one-dark-cyan"     . "#56B6C2")
-          ("atom-one-dark-blue"     . "#61AFEF")
-          ("atom-one-dark-purple"   . "#C678DD")
-          ("atom-one-dark-green"    . "#98C379")
-          ("atom-one-dark-red-1"    . "#E06C75")
-          ("atom-one-dark-red-2"    . "#BE5046")
-          ("atom-one-dark-orange-1" . "#D19A66")
-          ("atom-one-dark-orange-2" . "#E5C07B")
-          ("atom-one-dark-gray"     . "#3E4451")
-          ("atom-one-dark-silver"   . "#AAAAAA")
-          ("atom-one-dark-black"    . "#0F1011"))
-        "List of Atom One Dark colors.")
-    )
-
 ;; (load-theme 'atom-dark)
 ;; (load-theme 'tango-dark)
 (load-theme 'atom-one-dark)
@@ -335,6 +310,10 @@ Repeated invocations toggle between the two most recently open buffers."
 
 
 (require 'elixir-mode)
+
+(add-hook 'elixir-mode-hook
+          (lambda () (add-hook 'before-save-hook 'elixir-format nil t)))
+
 (add-to-list 'load-path "~/.emacs.d/vendor/alchemist.el")
 (require 'alchemist)
 
@@ -353,6 +332,9 @@ Repeated invocations toggle between the two most recently open buffers."
 (global-flycheck-mode t)
 
 (modify-syntax-entry (string-to-char "_") "w" elixir-mode-syntax-table)
+
+(package-install 'exec-path-from-shell)
+(exec-path-from-shell-initialize)
 
 ;; JSX
 (require 'web-mode)
@@ -492,7 +474,11 @@ Repeated invocations toggle between the two most recently open buffers."
 (add-hook 'elm-mode-hook 'linum-mode)
 (add-hook 'elm-mode-hook 'flycheck-mode)
 
+(if (fboundp 'mac-auto-operator-composition-mode)
+    (mac-auto-operator-composition-mode))
+
 (setq custom-file (expand-file-name "customize.el" user-emacs-directory))
+
 (load custom-file)
 
 (provide 'anything-bundle)

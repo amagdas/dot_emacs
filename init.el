@@ -4,7 +4,8 @@
 
 (package-initialize)
 
-(require 'cask)
+(require 'cask "/usr/local/share/emacs/site-lisp/cask/cask.el")
+;(require 'cask)
 (cask-initialize)
 
 (add-to-list 'load-path (expand-file-name "bundles" user-emacs-directory))
